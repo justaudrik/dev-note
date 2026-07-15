@@ -17,13 +17,13 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/auth/login")
 
 
 def hash_password(password: str) -> str:
-    return truncate_password(pwd_context.hash(password));
+    return pwd_context.hash(password);
 
-# Override bcrypt's 72 byte limit by truncating
-def truncate_password(password: str) -> str:
-    # Safely truncate the password to 72 bytes before hashing
-    truncated_password = password.encode('utf-8')[:72].decode('utf-8', 'ignore')
-    return pwd_context.hash(truncated_password)
+# # Override bcrypt's 72 byte limit by truncating
+# def truncate_password(password: str) -> str:
+#     # Safely truncate the password to 72 bytes before hashing
+#     truncated_password = password.encode('utf-8')[:72].decode('utf-8', 'ignore')
+#     return pwd_context.hash(truncated_password)
 
 def verify_password(plain: str, hashed: str) -> bool:
     return pwd_context.verify(plain, hashed)
