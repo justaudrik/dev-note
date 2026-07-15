@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DevNote — Sign In</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0b0b12;
+      --surface: #13131f;
+      --surface-2: #1c1c2e;
+      --border: #2d2d45;
+      --accent: #f0a030;
+      --accent-hover: #ffb84d;
+      --text: #dde1f0;
+      --text-muted: #6b7299;
+      --danger: #e05252;
+      --radius: 10px;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      /* Subtle dot grid background */
+      background-image: radial-gradient(circle, #2d2d45 1px, transparent 1px);
+      background-size: 28px 28px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 40px;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.5);
+    }
+
+    .brand {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .brand-mark {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--accent);
+      background: rgba(240, 160, 48, 0.1);
+      border: 1px solid rgba(240, 160, 48, 0.25);
+      padding: 4px 10px;
+      border-radius: 4px;
+      letter-spacing: 0.05em;
+      display: inline-block;
+      margin-bottom: 12px;
+    }
+
+    .brand h1 {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 26px;
+      font-weight: 600;
+      color: var(--text);
+      letter-spacing: -0.02em;
+    }
+
+    .brand p {
+      color: var(--text-muted);
+      font-size: 14px;
+      margin-top: 6px;
+    }
+
+    /* Tab switcher */
+    .tabs {
+      display: flex;
+      background: var(--surface-2);
+      border-radius: 7px;
+      padding: 3px;
+      margin-bottom: 28px;
+      gap: 2px;
+    }
+
+    .tab {
+      flex: 1;
+      padding: 9px;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .tab.active {
+      background: var(--surface);
+      color: var(--text);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+    }
+
+    /* Form */
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+      letter-spacing: 0.02em;
+    }
+
+    input {
+      width: 100%;
+      padding: 11px 14px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.15s ease;
+    }
+
+    input:focus {
+      border-color: var(--accent);
+    }
+
+    input::placeholder { color: var(--text-muted); opacity: 0.5; }
+
+    .submit-btn {
+      width: 100%;
+      padding: 12px;
+      background: var(--accent);
+      border: none;
+      border-radius: 7px;
+      color: #0b0b12;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: background 0.15s ease, transform 0.1s ease;
+    }
+
+    .submit-btn:hover { background: var(--accent-hover); }
+    .submit-btn:active { transform: scale(0.99); }
+    .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .error-msg {
+      display: none;
+      background: rgba(224, 82, 82, 0.1);
+      border: 1px solid rgba(224, 82, 82, 0.3);
+      color: var(--danger);
+      font-size: 13px;
+      padding: 10px 14px;
+      border-radius: 7px;
+      margin-bottom: 16px;
+    }
+
+    .error-msg.visible { display: block; }
+
+    /* Hide register-only fields by default */
+    #registerOnly { display: none; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="brand">
+      <div class="brand-mark">DN</div>
+      <h1>DevNote</h1>
+      <p>A developer-oriented note sharing platform</p>
+    </div>
+
+    <div class="tabs">
+      <button class="tab active" id="tabLogin" onclick="switchTab('login')">Log In</button>
+      <button class="tab" id="tabRegister" onclick="switchTab('register')">Create Account</button>
+    </div>
+
+    <div class="error-msg" id="errorMsg"></div>
+
+    <form onsubmit="handleSubmit(event)">
+      <div id="registerOnly">
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" id="username" placeholder="audrik" autocomplete="username" />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="you@example.com" autocomplete="email" required />
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="••••••••" autocomplete="current-password" required />
+      </div>
+
+      <button type="submit" class="submit-btn" id="submitBtn">Log In</button>
+    </form>
+  </div>
+
+  <script>
+    let activeTab = 'login';
+
+    // If already logged in, skip to dashboard
+    if (sessionStorage.getItem('devnote_token')) {
+      window.location.href = '/dashboard';
+    }
+
+    function switchTab(tab) {
+      activeTab = tab;
+      document.getElementById('tabLogin').classList.toggle('active', tab === 'login');
+      document.getElementById('tabRegister').classList.toggle('active', tab === 'register');
+      document.getElementById('registerOnly').style.display = tab === 'register' ? 'block' : 'none';
+      document.getElementById('submitBtn').textContent = tab === 'login' ? 'Log In' : 'Create Account';
+      hideError();
+    }
+
+    function showError(msg) {
+      const el = document.getElementById('errorMsg');
+      el.textContent = msg;
+      el.classList.add('visible');
+    }
+
+    function hideError() {
+      document.getElementById('errorMsg').classList.remove('visible');
+    }
+
+    async function handleSubmit(e) {
+      e.preventDefault();
+      hideError();
+
+      const btn = document.getElementById('submitBtn');
+      btn.disabled = true;
+      btn.textContent = activeTab === 'login' ? 'Logging in...' : 'Creating account...';
+
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+
+      try {
+        let res, data;
+
+        if (activeTab === 'register') {
+          const username = document.getElementById('username').value.trim();
+          if (!username) { showError('Username is required'); return; }
+
+          res = await fetch('/api/auth/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, email, password })
+          });
+        } else {
+          res = await fetch('/api/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password })
+          });
+        }
+
+        data = await res.json();
+
+        if (!res.ok) {
+          showError(data.detail || 'Something went wrong');
+          return;
+        }
+
+        sessionStorage.setItem('devnote_token', data.access_token);
+        window.location.href = '/dashboard';
+
+      } catch (err) {
+        showError('Could not connect to server. Is it running?');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = activeTab === 'login' ? 'Log In' : 'Create Account';
+      }
+    }
+  </script>
+</body>
+</html>
