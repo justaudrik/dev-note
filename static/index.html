@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>DevNote — Sign In</title>
+    <title>dev-note — Sign In</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link
       href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600&display=swap"
@@ -25,9 +25,13 @@
         --border: #2d2d45;
         --accent: #f0a030;
         --accent-hover: #ffb84d;
+        --accent-dim: rgba(240, 160, 48, 0.12);
         --text: #dde1f0;
         --text-muted: #6b7299;
+        --text-dim: #3d4266;
         --danger: #e05252;
+        --danger-dim: rgba(224, 82, 82, 0.1);
+        --success: #4ade80;
         --radius: 10px;
       }
 
@@ -39,7 +43,6 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        /* Subtle dot grid background */
         background-image: radial-gradient(circle, #2d2d45 1px, transparent 1px);
         background-size: 28px 28px;
       }
@@ -50,21 +53,21 @@
         border-radius: var(--radius);
         padding: 40px;
         width: 100%;
-        max-width: 400px;
+        max-width: 420px;
         box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5);
       }
 
+      /* ── Brand ── */
       .brand {
         text-align: center;
         margin-bottom: 32px;
       }
-
       .brand-mark {
         font-family: "JetBrains Mono", monospace;
         font-size: 13px;
         font-weight: 600;
         color: var(--accent);
-        background: rgba(240, 160, 48, 0.1);
+        background: var(--accent-dim);
         border: 1px solid rgba(240, 160, 48, 0.25);
         padding: 4px 10px;
         border-radius: 4px;
@@ -72,31 +75,27 @@
         display: inline-block;
         margin-bottom: 12px;
       }
-
       .brand h1 {
         font-family: "JetBrains Mono", monospace;
         font-size: 26px;
         font-weight: 600;
-        color: var(--text);
         letter-spacing: -0.02em;
       }
-
       .brand p {
         color: var(--text-muted);
         font-size: 14px;
         margin-top: 6px;
       }
 
-      /* Tab switcher */
+      /* ── Tabs ── */
       .tabs {
         display: flex;
         background: var(--surface-2);
         border-radius: 7px;
         padding: 3px;
-        margin-bottom: 28px;
+        margin-bottom: 24px;
         gap: 2px;
       }
-
       .tab {
         flex: 1;
         padding: 9px;
@@ -108,20 +107,18 @@
         font-weight: 500;
         border-radius: 5px;
         cursor: pointer;
-        transition: all 0.15s ease;
+        transition: all 0.15s;
       }
-
       .tab.active {
         background: var(--surface);
         color: var(--text);
         box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
       }
 
-      /* Form */
+      /* ── Form ── */
       .form-group {
-        margin-bottom: 16px;
+        margin-bottom: 14px;
       }
-
       label {
         display: block;
         font-size: 13px;
@@ -130,7 +127,6 @@
         margin-bottom: 6px;
         letter-spacing: 0.02em;
       }
-
       input {
         width: 100%;
         padding: 11px 14px;
@@ -141,21 +137,33 @@
         font-family: "DM Sans", sans-serif;
         font-size: 14px;
         outline: none;
-        transition: border-color 0.15s ease;
+        transition: border-color 0.15s;
       }
-
       input:focus {
         border-color: var(--accent);
       }
-
       input::placeholder {
         color: var(--text-muted);
         opacity: 0.5;
+      }
+      input.invalid {
+        border-color: var(--danger);
+      }
+
+      .field-error {
+        font-size: 12px;
+        color: var(--danger);
+        margin-top: 4px;
+        display: none;
+      }
+      .field-error.visible {
+        display: block;
       }
 
       .submit-btn {
         width: 100%;
         padding: 12px;
+        margin-top: 8px;
         background: var(--accent);
         border: none;
         border-radius: 7px;
@@ -164,12 +172,10 @@
         font-size: 15px;
         font-weight: 600;
         cursor: pointer;
-        margin-top: 8px;
         transition:
-          background 0.15s ease,
-          transform 0.1s ease;
+          background 0.15s,
+          transform 0.1s;
       }
-
       .submit-btn:hover {
         background: var(--accent-hover);
       }
@@ -179,95 +185,277 @@
       .submit-btn:disabled {
         opacity: 0.5;
         cursor: not-allowed;
+        transform: none;
       }
 
-      .error-msg {
+      /* ── Alerts ── */
+      .alert {
         display: none;
-        background: rgba(224, 82, 82, 0.1);
-        border: 1px solid rgba(224, 82, 82, 0.3);
-        color: var(--danger);
-        font-size: 13px;
         padding: 10px 14px;
         border-radius: 7px;
+        font-size: 13px;
         margin-bottom: 16px;
+        line-height: 1.5;
       }
-
-      .error-msg.visible {
+      .alert.visible {
         display: block;
       }
+      .alert.error {
+        background: var(--danger-dim);
+        border: 1px solid rgba(224, 82, 82, 0.3);
+        color: var(--danger);
+      }
+      .alert a {
+        color: var(--accent);
+        cursor: pointer;
+        text-decoration: underline;
+      }
 
-      /* Hide register-only fields by default */
-      #registerOnly {
-        display: none;
+      /* ── Pending (check email) state ── */
+      .state-card {
+        text-align: center;
+        padding: 8px 0;
+      }
+
+      .state-icon {
+        font-size: 48px;
+        display: block;
+        margin-bottom: 16px;
+        line-height: 1;
+      }
+
+      .state-card h2 {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 10px;
+      }
+
+      .state-card p {
+        color: var(--text-muted);
+        font-size: 14px;
+        line-height: 1.6;
+        margin-bottom: 6px;
+      }
+
+      .state-card strong {
+        color: var(--text);
+      }
+
+      .ghost-btn {
+        background: none;
+        border: 1px solid var(--border);
+        color: var(--text-muted);
+        font-family: "DM Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 500;
+        padding: 9px 18px;
+        border-radius: 7px;
+        cursor: pointer;
+        margin-top: 16px;
+        transition: all 0.15s;
+      }
+      .ghost-btn:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+      }
+      .ghost-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      .resend-status {
+        font-size: 12px;
+        margin-top: 10px;
+        min-height: 18px;
+        color: var(--text-muted);
+      }
+
+      /* Dev-mode verification link (only when SMTP isn't configured) */
+      .dev-notice {
+        margin-top: 20px;
+        padding: 10px 14px;
+        background: var(--accent-dim);
+        border: 1px solid rgba(240, 160, 48, 0.2);
+        border-radius: 7px;
+        font-size: 12px;
+        color: var(--accent);
+        line-height: 1.5;
+      }
+      .dev-notice a {
+        color: var(--accent);
+        text-decoration: underline;
+        word-break: break-all;
+      }
+
+      .back-link {
+        display: block;
+        margin-top: 18px;
+        font-size: 13px;
+        color: var(--text-dim);
+        cursor: pointer;
+        transition: color 0.15s;
+      }
+      .back-link:hover {
+        color: var(--text-muted);
+      }
+
+      /* ── Verifying spinner state ── */
+      .spinner {
+        width: 32px;
+        height: 32px;
+        margin: 0 auto 18px;
+        border: 3px solid var(--surface-2);
+        border-top-color: var(--accent);
+        border-radius: 50%;
+        animation: spin 0.75s linear infinite;
+        display: block;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
       }
     </style>
   </head>
   <body>
     <div class="card">
+      <!-- Brand — always visible -->
       <div class="brand">
         <div class="brand-mark">DN</div>
         <h1>dev-note</h1>
-        <p>A developer-oriented note sharing platform.</p>
+        <p>A developer-oriented note sharing platform</p>
       </div>
 
-      <div class="tabs">
-        <button class="tab active" id="tabLogin" onclick="switchTab('login')">
-          Log In
-        </button>
-        <button class="tab" id="tabRegister" onclick="switchTab('register')">
-          Create Account
-        </button>
-      </div>
+      <!-- ══════════════════════════════════════
+         STATE 1 — Login / Register form
+    ══════════════════════════════════════ -->
+      <div id="authArea">
+        <div class="tabs">
+          <button class="tab active" id="tabLogin" onclick="switchTab('login')">
+            Log In
+          </button>
+          <button class="tab" id="tabRegister" onclick="switchTab('register')">
+            Create Account
+          </button>
+        </div>
 
-      <div class="error-msg" id="errorMsg"></div>
+        <div class="alert error" id="errorMsg"></div>
 
-      <form onsubmit="handleSubmit(event)">
-        <div id="registerOnly">
+        <form onsubmit="handleSubmit(event)" novalidate>
+          <!-- Register only -->
+          <div id="registerOnly" style="display: none">
+            <div class="form-group">
+              <label for="username">Username</label>
+              <input
+                type="text"
+                id="username"
+                placeholder="audrik"
+                autocomplete="username"
+                maxlength="30"
+              />
+              <div class="field-error" id="usernameError"></div>
+            </div>
+          </div>
+
           <div class="form-group">
-            <label for="username">Username</label>
+            <label for="email">Email</label>
             <input
-              type="text"
-              id="username"
-              placeholder="audrik"
-              autocomplete="username"
+              type="email"
+              id="email"
+              placeholder="you@example.com"
+              autocomplete="email"
+              required
             />
+            <div class="field-error" id="emailError"></div>
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              placeholder="••••••••"
+              autocomplete="current-password"
+              required
+            />
+            <div class="field-error" id="passwordError"></div>
+          </div>
+
+          <button type="submit" class="submit-btn" id="submitBtn">
+            Log In
+          </button>
+        </form>
+      </div>
+
+      <!-- ══════════════════════════════════════
+         STATE 2 — Check your email (post-register)
+    ══════════════════════════════════════ -->
+      <div id="pendingArea" style="display: none">
+        <div class="state-card">
+          <span class="state-icon">✉</span>
+          <h2>Check your email</h2>
+          <p>We sent a verification link to</p>
+          <p><strong id="pendingEmail"></strong></p>
+          <p style="margin-top: 8px">
+            Click the link in the email to activate your account.
+          </p>
+
+          <button
+            class="ghost-btn"
+            id="resendBtn"
+            onclick="resendVerification()"
+          >
+            Resend verification email
+          </button>
+          <p class="resend-status" id="resendStatus"></p>
+
+          <!-- Only shown when SMTP isn't configured — lets dev verify without email -->
+          <div id="devNotice" style="display: none">
+            <div class="dev-notice">
+              <strong>Dev mode</strong> — SMTP not configured.<br />
+              <a id="devVerifyLink" href="#"
+                >Click here to verify your account directly.</a
+              >
+            </div>
+          </div>
+
+          <a class="back-link" onclick="showArea('auth')">← Back to login</a>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════
+         STATE 3 — Verifying (processing ?verify= link)
+    ══════════════════════════════════════ -->
+      <div id="verifyingArea" style="display: none">
+        <div class="state-card">
+          <span class="spinner"></span>
+          <h2 id="verifyTitle">Verifying your email…</h2>
+          <p id="verifyMessage">Just a moment.</p>
+          <div id="verifyBackLink" style="display: none; margin-top: 16px">
+            <a class="back-link" onclick="showArea('auth')">← Go to login</a>
           </div>
         </div>
-
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input
-            type="email"
-            id="email"
-            placeholder="you@example.com"
-            autocomplete="email"
-            required
-          />
-        </div>
-
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            placeholder="••••••••"
-            autocomplete="current-password"
-            required
-          />
-        </div>
-
-        <button type="submit" class="submit-btn" id="submitBtn">Log In</button>
-      </form>
+      </div>
     </div>
+    <!-- /.card -->
 
     <script>
+      // ─── State ────────────────────────────────────────────────
       let activeTab = "login";
+      let pendingEmailAddress = "";
 
-      // If already logged in, skip to dashboard
-      if (sessionStorage.getItem("devnote_token")) {
-        window.location.href = "/dashboard";
+      // ─── Area switcher ────────────────────────────────────────
+      function showArea(area) {
+        document.getElementById("authArea").style.display =
+          area === "auth" ? "block" : "none";
+        document.getElementById("pendingArea").style.display =
+          area === "pending" ? "block" : "none";
+        document.getElementById("verifyingArea").style.display =
+          area === "verifying" ? "block" : "none";
       }
 
+      // ─── Tab switching ────────────────────────────────────────
       function switchTab(tab) {
         activeTab = tab;
         document
@@ -280,69 +468,266 @@
           tab === "register" ? "block" : "none";
         document.getElementById("submitBtn").textContent =
           tab === "login" ? "Log In" : "Create Account";
-        hideError();
+        clearErrors();
       }
 
-      function showError(msg) {
+      // ─── Error helpers ────────────────────────────────────────
+      function showError(msg, isHtml = false) {
         const el = document.getElementById("errorMsg");
-        el.textContent = msg;
+        if (isHtml) el.innerHTML = msg;
+        else el.textContent = msg;
         el.classList.add("visible");
       }
-
-      function hideError() {
+      function clearErrors() {
         document.getElementById("errorMsg").classList.remove("visible");
+        ["username", "email", "password"].forEach((f) => {
+          const el = document.getElementById(f);
+          const err = document.getElementById(f + "Error");
+          if (el) el.classList.remove("invalid");
+          if (err) err.classList.remove("visible");
+        });
+      }
+      function fieldError(field, msg) {
+        const el = document.getElementById(field);
+        const err = document.getElementById(field + "Error");
+        if (el) el.classList.add("invalid");
+        if (err) {
+          err.textContent = msg;
+          err.classList.add("visible");
+        }
       }
 
-      async function handleSubmit(e) {
-        e.preventDefault();
-        hideError();
+      // ─── Client-side validation ───────────────────────────────
+      function validateEmail(email) {
+        // RFC 5322 simplified — catches obvious format errors before hitting the server
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+      }
 
-        const btn = document.getElementById("submitBtn");
-        btn.disabled = true;
-        btn.textContent =
-          activeTab === "login" ? "Logging in..." : "Creating account...";
+      function validateForm() {
+        let ok = true;
+        clearErrors();
 
         const email = document.getElementById("email").value.trim();
         const password = document.getElementById("password").value;
 
-        try {
-          let res, data;
+        if (!email) {
+          fieldError("email", "Email is required");
+          ok = false;
+        } else if (!validateEmail(email)) {
+          fieldError(
+            "email",
+            "Please enter a valid email address (e.g. you@example.com)",
+          );
+          ok = false;
+        }
 
+        if (!password) {
+          fieldError("password", "Password is required");
+          ok = false;
+        } else if (activeTab === "register" && password.length < 8) {
+          fieldError("password", "Password must be at least 8 characters");
+          ok = false;
+        }
+
+        if (activeTab === "register") {
+          const username = document.getElementById("username").value.trim();
+          if (!username) {
+            fieldError("username", "Username is required");
+            ok = false;
+          } else if (username.length < 2) {
+            fieldError("username", "Username must be at least 2 characters");
+            ok = false;
+          }
+        }
+
+        return ok;
+      }
+
+      // ─── Form submission ──────────────────────────────────────
+      async function handleSubmit(e) {
+        e.preventDefault();
+        if (!validateForm()) return;
+
+        const btn = document.getElementById("submitBtn");
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value;
+
+        btn.disabled = true;
+        btn.textContent =
+          activeTab === "login" ? "Logging in…" : "Creating account…";
+
+        try {
           if (activeTab === "register") {
             const username = document.getElementById("username").value.trim();
-            if (!username) {
-              showError("Username is required");
-              return;
-            }
 
-            res = await fetch("/api/auth/register", {
+            const res = await fetch("/api/auth/register", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ username, email, password }),
             });
+            const data = await res.json();
+
+            if (!res.ok) {
+              // Server-side validation failure (duplicate email, etc.)
+              const detail = data.detail;
+              if (Array.isArray(detail)) {
+                // Pydantic validation errors — surface each one
+                detail.forEach((err) => {
+                  const field = err.loc?.[err.loc.length - 1];
+                  if (
+                    field &&
+                    ["username", "email", "password"].includes(field)
+                  ) {
+                    fieldError(field, err.msg.replace("Value error, ", ""));
+                  }
+                });
+              } else {
+                showError(
+                  typeof detail === "string" ? detail : "Something went wrong",
+                );
+              }
+              return;
+            }
+
+            // Account created — show "check your email" state
+            pendingEmailAddress = email;
+            document.getElementById("pendingEmail").textContent = email;
+
+            if (!data.email_sent && data.verify_url) {
+              // Dev mode: SMTP not configured — show a direct verification link
+              document.getElementById("devNotice").style.display = "block";
+              document.getElementById("devVerifyLink").href = data.verify_url;
+            }
+
+            showArea("pending");
           } else {
-            res = await fetch("/api/auth/login", {
+            // Login
+            const res = await fetch("/api/auth/login", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ email, password }),
             });
+            const data = await res.json();
+
+            if (!res.ok) {
+              if (data.detail === "EMAIL_NOT_VERIFIED") {
+                // Set pending email so the resend button works if user clicks it
+                pendingEmailAddress = email;
+                showError(
+                  "Your email address isn't verified yet. " +
+                    '<a onclick="goToPendingFromLogin()">Resend verification email →</a>',
+                  true,
+                );
+              } else {
+                showError(
+                  typeof data.detail === "string"
+                    ? data.detail
+                    : "Incorrect email or password",
+                );
+              }
+              return;
+            }
+
+            sessionStorage.setItem("devnote_token", data.access_token);
+            window.location.href = "/dashboard";
           }
-
-          data = await res.json();
-
-          if (!res.ok) {
-            showError(data.detail || "Something went wrong");
-            return;
-          }
-
-          sessionStorage.setItem("devnote_token", data.access_token);
-          window.location.href = "/dashboard";
-        } catch (err) {
-          showError("Could not connect to server. Is it running?");
+        } catch {
+          showError(
+            "Could not connect to the server. Make sure it is running.",
+          );
         } finally {
           btn.disabled = false;
           btn.textContent = activeTab === "login" ? "Log In" : "Create Account";
         }
+      }
+
+      // ─── Resend verification ──────────────────────────────────
+      async function resendVerification() {
+        const btn = document.getElementById("resendBtn");
+        const statusEl = document.getElementById("resendStatus");
+
+        if (!pendingEmailAddress) return;
+
+        btn.disabled = true;
+        statusEl.textContent = "Sending…";
+        statusEl.style.color = "var(--text-muted)";
+
+        try {
+          const res = await fetch("/api/auth/resend-verification", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email: pendingEmailAddress }),
+          });
+          const data = await res.json();
+
+          statusEl.textContent = data.message || "Sent!";
+          statusEl.style.color = "var(--success)";
+
+          // Update dev link if a new one was returned
+          if (data.verify_url) {
+            document.getElementById("devNotice").style.display = "block";
+            document.getElementById("devVerifyLink").href = data.verify_url;
+          }
+        } catch {
+          statusEl.textContent = "Failed to send. Please try again.";
+          statusEl.style.color = "var(--danger)";
+        } finally {
+          btn.disabled = false;
+        }
+      }
+
+      function goToPendingFromLogin() {
+        document.getElementById("pendingEmail").textContent =
+          pendingEmailAddress;
+        showArea("pending");
+      }
+
+      // ─── Process ?verify= on page load ───────────────────────
+      (async function processVerification() {
+        const token = new URLSearchParams(location.search).get("verify");
+        if (!token) return;
+
+        // Already logged in — just go to dashboard
+        if (sessionStorage.getItem("devnote_token")) {
+          window.location.href = "/dashboard";
+          return;
+        }
+
+        showArea("verifying");
+        history.replaceState({}, "", "/"); // Clean the URL
+
+        try {
+          const res = await fetch(`/api/auth/verify/${token}`);
+          const data = await res.json();
+
+          if (res.ok) {
+            sessionStorage.setItem("devnote_token", data.access_token);
+            window.location.href = "/dashboard";
+          } else {
+            document.getElementById("verifyTitle").textContent =
+              "Verification failed";
+            document.getElementById("verifyMessage").innerHTML =
+              `<span style="color:var(--danger)">${data.detail || "Invalid or already used link."}</span>`;
+            document.getElementById("verifyBackLink").style.display = "block";
+            // Stop the spinner
+            document.querySelector(".spinner").style.display = "none";
+          }
+        } catch {
+          document.getElementById("verifyTitle").textContent =
+            "Something went wrong";
+          document.getElementById("verifyMessage").textContent =
+            "Connection error. Please try again.";
+          document.getElementById("verifyBackLink").style.display = "block";
+          document.querySelector(".spinner").style.display = "none";
+        }
+      })();
+
+      // If already logged in skip the page entirely
+      if (
+        sessionStorage.getItem("devnote_token") &&
+        !location.search.includes("verify")
+      ) {
+        window.location.href = "/dashboard";
       }
     </script>
   </body>

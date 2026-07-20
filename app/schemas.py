@@ -1,17 +1,36 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr, field_validator
 from datetime import datetime
 from typing import Optional
 
 
-# ── Auth ──────────────────────────────────────────────
+# ── Auth ──────────────────────────────────────────────────────
 class UserCreate(BaseModel):
     username: str
-    email: str
+    email: EmailStr       # pydantic validates RFC 5321 format; requires email-validator package
     password: str
+
+    @field_validator("username")
+    @classmethod
+    def username_valid(cls, v: str) -> str:
+        v = v.strip()
+        if len(v) < 2:
+            raise ValueError("Username must be at least 2 characters")
+        if len(v) > 30:
+            raise ValueError("Username must be at most 30 characters")
+        if not v.replace("_", "").replace("-", "").isalnum():
+            raise ValueError("Username may only contain letters, numbers, hyphens, and underscores")
+        return v
+
+    @field_validator("password")
+    @classmethod
+    def password_valid(cls, v: str) -> str:
+        if len(v) < 8:
+            raise ValueError("Password must be at least 8 characters")
+        return v
 
 
 class UserLogin(BaseModel):
-    email: str
+    email: EmailStr
     password: str
 
 
@@ -28,11 +47,11 @@ class UserResponse(BaseModel):
     model_config = {"from_attributes": True}
 
 
-# ── Documents ─────────────────────────────────────────
+# ── Documents ─────────────────────────────────────────────────
 class DocumentCreate(BaseModel):
     title: str = "Untitled Document"
     content: str = ""
-    format: str = "plaintext"   # "markdown" or "plaintext"
+    format: str = "plaintext"
 
 
 class DocumentUpdate(BaseModel):
@@ -53,3 +72,4 @@ class DocumentResponse(BaseModel):
     updated_at: datetime
 
     model_config = {"from_attributes": True}
+    

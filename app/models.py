@@ -11,6 +11,8 @@ class User(Base):
     username = Column(String, unique=True, index=True, nullable=False)
     email = Column(String, unique=True, index=True, nullable=False)
     hashed_password = Column(String, nullable=False)
+    is_verified = Column(Boolean, default=False, nullable=False)
+    verification_token = Column(String(36), nullable=True)  # UUID; cleared after use
 
     documents = relationship("Document", back_populates="owner", cascade="all, delete-orphan")
 
@@ -33,7 +35,6 @@ class Document(Base):
 
 
 class DocumentCollaborator(Base):
-    """Tracks which users have been granted access to a document."""
     __tablename__ = "document_collaborators"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -43,7 +44,6 @@ class DocumentCollaborator(Base):
 
 
 class ShareLink(Base):
-    """A UUID token that grants access to a document via a URL."""
     __tablename__ = "share_links"
 
     id = Column(Integer, primary_key=True, index=True)
