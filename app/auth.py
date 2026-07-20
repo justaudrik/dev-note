@@ -7,8 +7,10 @@ from sqlalchemy.orm import Session
 from . import models
 from .database import get_db
 
+import os
+
 # TODO: Move to .env before production — never hardcode secrets
-SECRET_KEY = "devnote-dev-secret-key-replace-in-production"
+SECRET_KEY = os.getenv("JWT_SECRET", "devnote-dev-secret-key-replace-in-production")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60
 
@@ -17,13 +19,8 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/auth/login")
 
 
 def hash_password(password: str) -> str:
-    return pwd_context.hash(password);
+    return pwd_context.hash(password)
 
-# # Override bcrypt's 72 byte limit by truncating
-# def truncate_password(password: str) -> str:
-#     # Safely truncate the password to 72 bytes before hashing
-#     truncated_password = password.encode('utf-8')[:72].decode('utf-8', 'ignore')
-#     return pwd_context.hash(truncated_password)
 
 def verify_password(plain: str, hashed: str) -> bool:
     return pwd_context.verify(plain, hashed)

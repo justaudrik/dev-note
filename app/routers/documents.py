@@ -1,9 +1,11 @@
 from fastapi import APIRouter, Depends, HTTPException, status
+from sqlalchemy import or_
 from sqlalchemy.orm import Session
 from typing import List
 from .. import models, schemas
 from ..database import get_db
 from ..auth import get_current_user
+from ..utils import has_document_access
 
 router = APIRouter(prefix="/api/documents", tags=["documents"])
 
@@ -13,10 +15,20 @@ def list_documents(
     current_user: models.User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """Return all documents for the logged-in user, pinned first, then newest."""
+    """Return all documents the user owns OR is a collaborator on."""
+    collab_ids = (
+        db.query(models.DocumentCollaborator.document_id)
+        .filter(models.DocumentCollaborator.user_id == current_user.id)
+        .subquery()
+    )
     return (
         db.query(models.Document)
-        .filter(models.Document.user_id == current_user.id)
+        .filter(
+            or_(
+                models.Document.user_id == current_user.id,
+                models.Document.id.in_(collab_ids)
+            )
+        )
         .order_by(models.Document.is_pinned.desc(), models.Document.updated_at.desc())
         .all()
     )
@@ -28,7 +40,6 @@ def create_document(
     current_user: models.User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """Create a new document owned by the current user."""
     document = models.Document(
         user_id=current_user.id,
         title=doc_data.title,
@@ -47,15 +58,11 @@ def get_document(
     current_user: models.User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """Fetch a single document — only if it belongs to the current user."""
-    document = db.query(models.Document).filter(
-        models.Document.id == doc_id,
-        models.Document.user_id == current_user.id
-    ).first()
-
+    document = db.query(models.Document).filter(models.Document.id == doc_id).first()
     if not document:
         raise HTTPException(status_code=404, detail="Document not found")
-
+    if not has_document_access(current_user.id, doc_id, db):
+        raise HTTPException(status_code=403, detail="Access denied")
     return document
 
 
@@ -66,16 +73,12 @@ def update_document(
     current_user: models.User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """Update title, content, format, or pinned status of a document."""
-    document = db.query(models.Document).filter(
-        models.Document.id == doc_id,
-        models.Document.user_id == current_user.id
-    ).first()
-
+    document = db.query(models.Document).filter(models.Document.id == doc_id).first()
     if not document:
         raise HTTPException(status_code=404, detail="Document not found")
+    if not has_document_access(current_user.id, doc_id, db):
+        raise HTTPException(status_code=403, detail="Access denied")
 
-    # Only update fields that were actually sent
     if doc_data.title is not None:
         document.title = doc_data.title
     if doc_data.content is not None:
@@ -96,14 +99,12 @@ def delete_document(
     current_user: models.User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """Permanently delete a document."""
+    """Only the document owner can delete."""
     document = db.query(models.Document).filter(
         models.Document.id == doc_id,
         models.Document.user_id == current_user.id
     ).first()
-
     if not document:
-        raise HTTPException(status_code=404, detail="Document not found")
-
+        raise HTTPException(status_code=404, detail="Document not found or not owner")
     db.delete(document)
     db.commit()

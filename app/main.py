@@ -1,3 +1,6 @@
+from dotenv import load_dotenv
+load_dotenv()  # Load .env before anything else reads os.getenv()
+
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
@@ -5,8 +8,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from .database import engine
 from . import models
 from .routers import auth_router, documents
+from .routers.collaboration import router as collab_router
 
-# Auto-create all tables on startup (prototype only — use Alembic migrations in full project)
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="DevNote API")
@@ -19,11 +22,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Serve HTML/CSS/JS files from the static/ directory
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 app.include_router(auth_router.router)
 app.include_router(documents.router)
+app.include_router(collab_router)
 
 
 @app.get("/")

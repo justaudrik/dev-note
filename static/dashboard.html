@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>DevNote — Dashboard</title>
+    <title>dev-note — Dashboard</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link
       href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600&display=swap"
@@ -785,6 +785,246 @@
       .md-preview tr:hover td {
         background: rgba(255, 255, 255, 0.02);
       }
+
+      /* ==============================
+       SHARE BUTTON
+    ============================== */
+      .share-btn {
+        background: none;
+        border: 1px solid rgba(240, 160, 48, 0.3);
+        color: var(--accent);
+        font-family: "DM Sans", sans-serif;
+        font-size: 12px;
+        font-weight: 600;
+        padding: 5px 12px;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all var(--transition);
+        flex-shrink: 0;
+      }
+      .share-btn:hover {
+        background: var(--accent-dim);
+        border-color: var(--accent);
+      }
+
+      /* ==============================
+       PRESENCE INDICATOR
+    ============================== */
+      .presence-indicator {
+        display: none;
+        font-size: 11px;
+        color: var(--success);
+        font-family: "JetBrains Mono", monospace;
+        animation: blink 2s infinite;
+      }
+      @keyframes blink {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.4;
+        }
+      }
+
+      /* ==============================
+       SHARE MODAL
+    ============================== */
+      .share-modal-inner {
+        width: 440px;
+      }
+
+      .share-modal-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 22px;
+      }
+      .share-modal-header h3 {
+        margin: 0;
+        font-size: 16px;
+        font-weight: 600;
+      }
+
+      .modal-close-btn {
+        background: none;
+        border: none;
+        color: var(--text-muted);
+        font-size: 16px;
+        cursor: pointer;
+        padding: 4px 6px;
+        border-radius: 4px;
+        transition: color var(--transition);
+        line-height: 1;
+      }
+      .modal-close-btn:hover {
+        color: var(--text);
+      }
+
+      .share-section {
+        margin-bottom: 16px;
+      }
+
+      .share-section-label {
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        margin-bottom: 8px;
+      }
+
+      .share-link-row,
+      .invite-row {
+        display: flex;
+        gap: 8px;
+      }
+
+      .share-link-input {
+        flex: 1;
+        padding: 9px 12px;
+        background: var(--surface-2);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        color: var(--text-muted);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 11px;
+        outline: none;
+        min-width: 0;
+      }
+
+      .copy-btn {
+        padding: 9px 14px;
+        background: var(--surface-3);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        color: var(--text);
+        font-family: "DM Sans", sans-serif;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        white-space: nowrap;
+        transition: all var(--transition);
+        flex-shrink: 0;
+      }
+      .copy-btn:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+      }
+      .copy-btn.copied {
+        color: var(--success);
+        border-color: var(--success);
+      }
+
+      .share-hint {
+        font-size: 11px;
+        color: var(--text-dim);
+        margin-top: 6px;
+      }
+
+      .invite-input {
+        flex: 1;
+        padding: 9px 12px;
+        min-width: 0;
+        background: var(--surface-2);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        color: var(--text);
+        font-family: "DM Sans", sans-serif;
+        font-size: 13px;
+        outline: none;
+        transition: border-color var(--transition);
+      }
+      .invite-input:focus {
+        border-color: var(--accent);
+      }
+      .invite-input::placeholder {
+        color: var(--text-dim);
+      }
+
+      .invite-btn {
+        padding: 9px 16px;
+        background: var(--accent);
+        border: none;
+        border-radius: 6px;
+        color: #0b0b12;
+        font-family: "DM Sans", sans-serif;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        white-space: nowrap;
+        flex-shrink: 0;
+        transition: background var(--transition);
+      }
+      .invite-btn:hover {
+        background: var(--accent-hover);
+      }
+      .invite-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      .email-status {
+        font-size: 12px;
+        margin-top: 8px;
+        min-height: 16px;
+      }
+
+      .share-divider {
+        border: none;
+        border-top: 1px solid var(--border);
+        margin: 16px 0;
+      }
+
+      .collaborator-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 7px 0;
+      }
+      .collaborator-avatar {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: var(--surface-3);
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 10px;
+        font-weight: 600;
+        color: var(--text-muted);
+      }
+      .collaborator-info {
+        flex: 1;
+        min-width: 0;
+      }
+      .collaborator-name {
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--text);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .collaborator-email {
+        font-size: 11px;
+        color: var(--text-dim);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .collaborator-role {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 10px;
+        font-weight: 600;
+        padding: 2px 7px;
+        border-radius: 3px;
+        background: var(--surface-2);
+        color: var(--text-muted);
+        flex-shrink: 0;
+      }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   </head>
@@ -796,7 +1036,7 @@
       <div class="sidebar-header">
         <div class="logo">
           <span class="logo-mark">DN</span>
-          <span class="logo-text">DevNote</span>
+          <span class="logo-text">dev-note</span>
         </div>
       </div>
 
@@ -867,6 +1107,11 @@
             📌
           </button>
 
+          <!-- Share -->
+          <button class="share-btn" id="shareBtn" onclick="openShareModal()">
+            ⇪ Share
+          </button>
+
           <!-- Delete -->
           <button class="delete-doc-btn" onclick="confirmDelete()">
             Delete
@@ -891,6 +1136,7 @@
 
         <div class="status-bar">
           <span class="save-status saved" id="saveStatus">✓ Saved</span>
+          <span class="presence-indicator" id="presenceIndicator"></span>
           <span class="char-count" id="charCount">0 chars</span>
           <span class="kbd-hint">Ctrl + S to save</span>
         </div>
@@ -915,16 +1161,78 @@
       </div>
     </div>
 
+    <!-- ==============================
+       SHARE MODAL
+  ============================== -->
+    <div class="modal-overlay" id="shareModal">
+      <div class="modal share-modal-inner">
+        <div class="share-modal-header">
+          <h3>Share Document</h3>
+          <button class="modal-close-btn" onclick="closeShareModal()">✕</button>
+        </div>
+
+        <div class="share-section">
+          <div class="share-section-label">Share Link</div>
+          <div class="share-link-row">
+            <input
+              class="share-link-input"
+              id="shareLinkInput"
+              type="text"
+              readonly
+            />
+            <button class="copy-btn" id="copyLinkBtn" onclick="copyShareLink()">
+              Copy
+            </button>
+          </div>
+          <p class="share-hint">
+            Anyone with this link can view and edit this document
+          </p>
+        </div>
+
+        <hr class="share-divider" />
+
+        <div class="share-section">
+          <div class="share-section-label">Invite by Email</div>
+          <div class="invite-row">
+            <input
+              class="invite-input"
+              id="inviteEmailInput"
+              type="email"
+              placeholder="colleague@example.com"
+            />
+            <button
+              class="invite-btn"
+              id="inviteSendBtn"
+              onclick="sendEmailInvite()"
+            >
+              Send
+            </button>
+          </div>
+          <p class="email-status" id="emailStatus"></p>
+        </div>
+
+        <hr class="share-divider" />
+
+        <div class="share-section">
+          <div class="share-section-label">People with access</div>
+          <div id="collaboratorsList"></div>
+        </div>
+      </div>
+    </div>
+
     <script>
       // ================================
       //  STATE
       // ================================
-      let currentDocId = null; // ID of the document currently open in the editor
+      let currentDocId = null;
       let currentIsPinned = false;
       let currentFormat = "plaintext";
-      let documents = []; // Local cache of the user's document list
-      let autoSaveTimer = null; // Debounce timer handle
-      let deleteTargetId = null; // Which doc the delete modal is targeting
+      let currentUser = null;
+      let documents = [];
+      let autoSaveTimer = null;
+      let deleteTargetId = null;
+      let ws = null;
+      let wsThrottleTimer = null;
 
       // ================================
       //  API HELPER
@@ -962,22 +1270,35 @@
       async function init() {
         const token = sessionStorage.getItem("devnote_token");
         if (!token) {
+          // Preserve join token across the login redirect
+          const joinToken = new URLSearchParams(location.search).get("join");
+          if (joinToken) sessionStorage.setItem("pending_join", joinToken);
           window.location.href = "/";
           return;
         }
 
         await loadUser();
         await loadDocuments();
+
+        // Process join token if present in URL or saved from before login
+        const joinToken =
+          new URLSearchParams(location.search).get("join") ||
+          sessionStorage.getItem("pending_join");
+
+        if (joinToken) {
+          sessionStorage.removeItem("pending_join");
+          history.replaceState({}, "", "/dashboard");
+          await handleJoin(joinToken);
+        }
       }
 
       async function loadUser() {
-        const user = await api("GET", "/api/auth/me");
-        if (!user) return;
-
-        document.getElementById("userAvatar").textContent = user.username
+        currentUser = await api("GET", "/api/auth/me");
+        if (!currentUser) return;
+        document.getElementById("userAvatar").textContent = currentUser.username
           .slice(0, 2)
           .toUpperCase();
-        document.getElementById("userName").textContent = user.username;
+        document.getElementById("userName").textContent = currentUser.username;
       }
 
       // ================================
@@ -1053,12 +1374,12 @@
       //  OPEN / LOAD DOCUMENT
       // ================================
       async function openDocument(id, preloaded = null) {
-        // Save any pending changes to the current doc before switching
         if (currentDocId && autoSaveTimer) {
           clearTimeout(autoSaveTimer);
           await saveNow();
         }
 
+        disconnectWebSocket(); // Leave previous document's session
         currentDocId = id;
 
         const doc = preloaded || (await api("GET", `/api/documents/${id}`));
@@ -1085,6 +1406,7 @@
         });
 
         document.getElementById("docContent").focus();
+        connectWebSocket(id);
       }
 
       // ================================
@@ -1166,10 +1488,13 @@
       function triggerAutoSave() {
         setSaveStatus("saving");
         clearTimeout(autoSaveTimer);
-        // Render preview + save 1.5 seconds after the user stops typing
         autoSaveTimer = setTimeout(() => {
           renderPreview();
-          saveNow();
+          if (ws && ws.readyState === WebSocket.OPEN) {
+            sendWSEdit(true); // Server saves to DB and confirms with { type: "saved" }
+          } else {
+            saveNow(); // Fallback: REST API save when no WS connection
+          }
         }, 1500);
       }
 
@@ -1219,6 +1544,10 @@
 
       function onContentInput() {
         updateCharCount();
+        // Send on every keystroke — WebSocket messages are lightweight,
+        // and this gives the other user true keystroke-level real-time updates.
+        sendWSEdit(false);
+        // DB save is still debounced at 1.5s so we don't hammer the database.
         triggerAutoSave();
       }
 
@@ -1254,9 +1583,10 @@
         try {
           await api("DELETE", `/api/documents/${deleteTargetId}`);
 
+          if (deleteTargetId === currentDocId) disconnectWebSocket();
+
           documents = documents.filter((d) => d.id !== deleteTargetId);
 
-          // If we deleted the currently open doc, reset the editor
           if (deleteTargetId === currentDocId) {
             currentDocId = null;
             document.getElementById("editorWrap").style.display = "none";
@@ -1274,6 +1604,7 @@
       //  LOGOUT
       // ================================
       function logout() {
+        disconnectWebSocket();
         sessionStorage.removeItem("devnote_token");
         window.location.href = "/";
       }
@@ -1305,12 +1636,217 @@
           if (currentDocId) {
             clearTimeout(autoSaveTimer);
             renderPreview();
-            saveNow();
+            if (ws && ws.readyState === WebSocket.OPEN) {
+              sendWSEdit(true);
+            } else {
+              saveNow();
+            }
           }
         }
-        // Escape — close modal
-        if (e.key === "Escape") closeModal();
+        if (e.key === "Escape") {
+          closeModal();
+          closeShareModal();
+        }
       });
+
+      // ================================
+      //  WEBSOCKET CLIENT
+      // ================================
+      function connectWebSocket(docId) {
+        if (ws) ws.close();
+        const token = sessionStorage.getItem("devnote_token");
+        const proto = location.protocol === "https:" ? "wss:" : "ws:";
+        ws = new WebSocket(
+          `${proto}//${location.host}/ws/${docId}?token=${token}`,
+        );
+
+        ws.onopen = () => updatePresence([]);
+        ws.onerror = () => {
+          ws = null;
+          updatePresence([]);
+        };
+        ws.onclose = () => {
+          ws = null;
+          updatePresence([]);
+        };
+
+        ws.onmessage = ({ data }) => {
+          const msg = JSON.parse(data);
+
+          if (msg.type === "edit") {
+            const ta = document.getElementById("docContent");
+            // Always apply remote edits — preserve local cursor so typing isn't disrupted
+            const cursorStart = ta.selectionStart;
+            const cursorEnd = ta.selectionEnd;
+            ta.value = msg.content;
+            // Clamp cursor to new content length in case it shrank
+            const max = msg.content.length;
+            ta.setSelectionRange(
+              Math.min(cursorStart, max),
+              Math.min(cursorEnd, max),
+            );
+            updateCharCount();
+            if (currentFormat === "markdown") renderPreview();
+          }
+
+          if (msg.type === "presence") updatePresence(msg.users || []);
+          if (msg.type === "saved") setSaveStatus("saved");
+        };
+      }
+
+      function disconnectWebSocket() {
+        if (ws) {
+          ws.close();
+          ws = null;
+        }
+        updatePresence([]);
+      }
+
+      // Send current content via WebSocket
+      // save=true  → also triggers a database write on the server
+      // save=false → broadcast only (real-time feel)
+      function sendWSEdit(save = false) {
+        if (!ws || ws.readyState !== WebSocket.OPEN) return;
+        ws.send(
+          JSON.stringify({
+            type: "edit",
+            content: document.getElementById("docContent").value,
+            title: save
+              ? document.getElementById("docTitle").value.trim() ||
+                "Untitled Document"
+              : undefined,
+            save,
+          }),
+        );
+      }
+
+      // Update the presence indicator in the status bar
+      function updatePresence(users) {
+        const myName = currentUser ? currentUser.username : null;
+        const others = myName ? users.filter((u) => u !== myName) : users;
+        const el = document.getElementById("presenceIndicator");
+
+        if (others.length === 0) {
+          el.style.display = "none";
+          el.textContent = "";
+        } else {
+          el.textContent =
+            others.length === 1
+              ? `● ${others[0]} is also editing`
+              : `● ${others.length} others editing`;
+          el.style.display = "inline";
+        }
+      }
+
+      // Process a ?join= token — adds user as collaborator then opens the doc
+      async function handleJoin(joinToken) {
+        try {
+          const result = await api("POST", `/api/collab/join/${joinToken}`);
+          if (result && result.document_id) {
+            await loadDocuments();
+            await openDocument(result.document_id);
+          }
+        } catch {
+          alert("This share link is invalid or no longer exists.");
+        }
+      }
+
+      // ================================
+      //  SHARE MODAL
+      // ================================
+      async function openShareModal() {
+        if (!currentDocId) return;
+
+        const result = await api("POST", `/api/collab/${currentDocId}/share`);
+        if (!result) return;
+
+        document.getElementById("shareLinkInput").value = result.url;
+        document.getElementById("inviteEmailInput").value = "";
+        document.getElementById("emailStatus").textContent = "";
+        const copyBtn = document.getElementById("copyLinkBtn");
+        copyBtn.textContent = "Copy";
+        copyBtn.classList.remove("copied");
+
+        const collabs = await api(
+          "GET",
+          `/api/collab/${currentDocId}/collaborators`,
+        );
+        if (collabs) renderCollaborators(collabs);
+
+        document.getElementById("shareModal").style.display = "flex";
+      }
+
+      function closeShareModal() {
+        document.getElementById("shareModal").style.display = "none";
+      }
+
+      function renderCollaborators(data) {
+        const all = [
+          { ...data.owner, role: "Owner" },
+          ...data.collaborators.map((c) => ({ ...c, role: "Editor" })),
+        ];
+        document.getElementById("collaboratorsList").innerHTML = all
+          .map(
+            (u) => `
+        <div class="collaborator-item">
+          <div class="collaborator-avatar">${escHtml(u.username.slice(0, 2).toUpperCase())}</div>
+          <div class="collaborator-info">
+            <div class="collaborator-name">${escHtml(u.username)}</div>
+            <div class="collaborator-email">${escHtml(u.email)}</div>
+          </div>
+          <span class="collaborator-role">${u.role}</span>
+        </div>`,
+          )
+          .join("");
+      }
+
+      function copyShareLink() {
+        const btn = document.getElementById("copyLinkBtn");
+        navigator.clipboard
+          .writeText(document.getElementById("shareLinkInput").value)
+          .then(() => {
+            btn.textContent = "✓ Copied";
+            btn.classList.add("copied");
+            setTimeout(() => {
+              btn.textContent = "Copy";
+              btn.classList.remove("copied");
+            }, 2000);
+          });
+      }
+
+      async function sendEmailInvite() {
+        const input = document.getElementById("inviteEmailInput");
+        const status = document.getElementById("emailStatus");
+        const btn = document.getElementById("inviteSendBtn");
+        const email = input.value.trim();
+        if (!email) return;
+
+        btn.disabled = true;
+        status.textContent = "Sending...";
+        status.style.color = "var(--text-muted)";
+
+        try {
+          const result = await api(
+            "POST",
+            `/api/collab/${currentDocId}/invite`,
+            { email },
+          );
+          if (result.email_sent) {
+            status.textContent = `✓ Invite sent to ${email}`;
+            status.style.color = "var(--success)";
+            input.value = "";
+          } else {
+            status.textContent =
+              "SMTP not configured — share the link above instead.";
+            status.style.color = "var(--accent)";
+          }
+        } catch {
+          status.textContent = "Failed to send. Share the link above instead.";
+          status.style.color = "var(--danger)";
+        } finally {
+          btn.disabled = false;
+        }
+      }
 
       // ================================
       //  BOOT
