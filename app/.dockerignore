@@ -1,0 +1,16 @@
+# Never bake secrets into the image
+.env
+
+# Local database — production uses PostgreSQL
+*.db
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# Git history
+.git/
+.gitignore
