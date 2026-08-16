@@ -8,11 +8,11 @@ from . import models
 from .database import get_db
 
 import os
-import traceback
 
-SECRET_KEY = os.getenv("JWT_SECRET")
-ALGORITHM = os.getenv("ALGORITHM")
-ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES"))
+# TODO: Move to .env before production — never hardcode secrets
+SECRET_KEY = os.getenv("JWT_SECRET", "devnote-dev-secret-key-replace-in-production")
+ALGORITHM = "HS256"
+ACCESS_TOKEN_EXPIRE_MINUTES = 60
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/auth/login")
