@@ -25,41 +25,49 @@ def register(
     request: Request,
     db: Session = Depends(get_db)
 ):
-    """
-    Create an unverified account and send a verification email.
-    Returns 202 Accepted — the account cannot log in until the email is verified.
-    """
-    if db.query(models.User).filter(models.User.email == user_data.email).first():
-        raise HTTPException(status_code=400, detail="Email already registered")
+    try:
+        """
+        Create an unverified account and send a verification email.
+        Returns 202 Accepted — the account cannot log in until the email is verified.
+        """
+        if db.query(models.User).filter(models.User.email == user_data.email).first():
+            raise HTTPException(status_code=400, detail="Email already registered")
 
-    if db.query(models.User).filter(models.User.username == user_data.username).first():
-        raise HTTPException(status_code=400, detail="Username already taken")
+        if db.query(models.User).filter(models.User.username == user_data.username).first():
+            raise HTTPException(status_code=400, detail="Username already taken")
 
-    verification_token = str(uuid.uuid4())
+        verification_token = str(uuid.uuid4())
 
-    user = models.User(
-        username=user_data.username,
-        email=user_data.email,
-        hashed_password=hash_password(user_data.password),
-        is_verified=False,
-        verification_token=verification_token
-    )
-    db.add(user)
-    db.commit()
+        user = models.User(
+            username=user_data.username,
+            email=user_data.email,
+            hashed_password=hash_password(user_data.password),
+            is_verified=False,
+            verification_token=verification_token
+        )
+        db.add(user)
+        db.commit()
 
-    verify_url = _build_verify_url(request, verification_token)
-    email_sent = send_verification_email(
-        to_email=user_data.email,
-        username=user_data.username,
-        verify_url=verify_url
-    )
+        verify_url = _build_verify_url(request, verification_token)
+        email_sent = send_verification_email(
+            to_email=user_data.email,
+            username=user_data.username,
+            verify_url=verify_url
+        )  
 
-    return {
-        "message": "Account created. Please check your email to verify before logging in.",
-        "email_sent": email_sent,
-        # verify_url is returned ONLY when SMTP isn't configured — useful for local dev
-        "verify_url": verify_url if not email_sent else None
-    }
+        return {
+            "message": "Account created. Please check your email to verify before logging in.",
+            "email_sent": email_sent,
+            # verify_url is returned ONLY when SMTP isn't configured — useful for local dev
+            "verify_url": verify_url if not email_sent else None
+        }
+    except Exception as e:
+        # This will print the error to Render's logs
+        print("CRITICAL ERROR IN REGISTER ROUTE:")
+        traceback.print_exc()
+        
+        # This forces the exact error string directly into your browser!
+        raise HTTPException(status_code=500, detail=f"DEBUG ERROR: {str(e)}")
 
 
 # ── Verify email ──────────────────────────────────────────────────────────────
