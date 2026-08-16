@@ -7,6 +7,8 @@ from ..database import get_db
 from ..auth import hash_password, verify_password, create_access_token, get_current_user
 from ..email_utils import send_verification_email
 
+import traceback
+
 router = APIRouter(prefix="/api/auth", tags=["auth"])
 
 
