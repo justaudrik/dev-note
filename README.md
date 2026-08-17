@@ -148,7 +148,5 @@ devnote/
 | `WS` | `/ws/{id}?token={jwt}` | WebSocket — real-time collaborative editing |
 
 ---
-
-## License
-
-MIT — see [LICENSE](LICENSE) for details.
+### Domain
+Current domain is active until August 16, 2027. Afterwards, devnote can only be accessed through it's original URL (Render) and Resend must either be reactivated or reconfigured to a different domain.
